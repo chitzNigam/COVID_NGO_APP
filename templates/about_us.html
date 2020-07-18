@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='about_us_css.css') }}">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="about-section">
+            <!-- <h1>About Us</h1> -->
+            <!-- <p>Some text about who we are and what we do.</p> -->
+            <!-- <p>Resize the browser window to see that this page is responsive by the way.</p> -->
+          </div>
+          
+            <div id = "our_team_format">
+                <h2 style="text-align:center">Our Team</h2>
+                <!-- <hr syle="width:50%"> -->
+            </div>
+
+
+          <div class="row">
+            <div class="column">
+              <div class="card">
+                <img src="{{ url_for('static', filename='sanskar.jpg') }}" width=400 height=500>
+                <div class="container">
+                    <div id ="name_format">
+                        <h2>Sanskar Agarwal</h2>
+                    </div>
+                  <p class="title">Department of Electronics and Communication Engineering, 
+                      IIT Guwahati
+                  </p>
+                  <!-- <p>Some text that describes me lorem ipsum ipsum lorem.</p> -->
+                  <p>Email: sanskar.agarwal@oracle.com</p>
+                  <!-- <p><button class="button">Contact</button></p> -->
+                </div>
+              </div>
+            </div>
+          
+            <div class="column">
+              <div class="card">
+                <img src="{{ url_for('static', filename='chitransh.png') }}" width=425 height=500>
+                <div class="container">
+
+                    <div id ="name_format">
+                        <h2>Chitransh Nigam</h2>
+                    </div>
+                  <!-- <h2></h2> -->
+                  <p class="title">Department of Computer Science and Engineering, 
+                      MNNIT Allahabad
+                  </p>
+                  <!-- <p>Some text that describes me lorem ipsum ipsum lorem.</p> -->
+                  <p>Email : chitransh.nigam@oracle.com</p>
+                  <!-- <p><button class="button">Contact</button></p> -->
+                </div>
+              </div>
+            </div>
+          
+            <div class="column">
+              <div class="card">
+                <img src="{{ url_for('static', filename='aakash.jpg') }}" width=400 height=500>
+                <div class="container">
+                  <!-- <h2>Aakash Mathur</h2> -->
+                  <div id ="name_format">
+                    <h2>Aakash Mathur</h2>
+                </div>
+                  <p class="title">Department of Electronics and Communication Engineering, 
+                      IIT BHU
+                  </p>
+                  <!-- <p>Some text that describes me lorem ipsum ipsum lorem.</p> -->
+                  <p>Email: aakash.mathur@oracle.com</p>
+                  <!-- <p><button class="button">Contact</button></p> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        
+
+          <div id="mission">
+            <h2>Mission</h2>
+            <p class='mission_text'>
+'Our Mission is to fight hand-in-hand with the
+Government and local bodies for a completely safe
+Corona-free society'
+        </p>
+        </div>
+
+        <div id="goals">
+            <h2>Goals</h2>
+            <p class='goals_text'>
+'Our goal is to help the society by feeding the needy
+and providing them with essentials like masks and hand
+sanitizers'
+        </p>
+        </div>
+
+        <div id="join_us">
+            <h2>Join Us</h2>
+            <p class="join_us_text">
+'Come, join us and play your role in this noble cause.
+We need you. The world needs you.
+As Gandhi said: 'Be the change that you wish to see in the world'
+        </p>
+        </div>
+        
+        <script src="" async defer></script>
+    </body>
+</html>
