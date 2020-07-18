@@ -36,6 +36,7 @@ def indeccx():
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=50)])
     email = StringField('Email', [validators.Email()])
+    city = StringField('City', [validators.Length(min=1,max=10)])
     org = StringField('Organisation', [validators.Length(min=1, max=10)])
     mobile = IntegerField('Mobile', [validators.NumberRange(max=9999999999)])
     password = PasswordField('Password', [
@@ -65,6 +66,7 @@ def register():
     if request.method == 'POST' and form.validate():
         name = form.name.data
         org = form.org.data
+        city = form.city.data
         email = form.email.data
         mobile = form.mobile.data
         password = sha256_crypt.encrypt(str(form.password.data))
@@ -73,7 +75,7 @@ def register():
         cur = mysql.connection.cursor()
 
         #Execute query
-        cur.execute("INSERT INTO users(name, org, email ,mobile, password) VALUES(%s,%s,%s,%s,%s)",(name, org, email ,mobile, password))
+        cur.execute("INSERT INTO users(name, org, email, city, mobile, password) VALUES(%s,%s,%s,%s,%s,%s)",(name, org, email, city, mobile, password))
 
         #Commit to DB
         mysql.connection.commit()

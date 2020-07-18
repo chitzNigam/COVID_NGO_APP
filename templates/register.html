@@ -4,7 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type ="text/css" href="{{ url_for('static', filename='ui_css.css') }}">
-<link rel="stylesheet" type ="text/css" href="{{ url_for('static', filename='new_user.css') }}">
 </head>
 <body>
 
@@ -48,6 +47,9 @@
     </div>
     <div class="form-group">
       {{render_field(form.email,class_="form-control")}}
+    </div>
+    <div class="form-group">
+      {{render_field(form.city,class_="form-control")}}
     </div>
     <div class="form-group">
       {{render_field(form.mobile,class_="form-control")}}
