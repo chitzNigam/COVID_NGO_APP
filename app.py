@@ -147,19 +147,22 @@ def is_logged_in(f):
 
 
 
-# #Dashboard
-# @app.route('/dashboard')
-# @is_logged_in
-# def dashboard():
-#         #MYSQL
-#         cur = mysql.connection.cursor()
-#         result = cur.execute("SELECT * FROM entries WHERE username=%s", [session.get('username')])
-#         if result > 0:
-#             entries = cur.fetchall()
-#             return render_template('dashboard.html', entries=entries)
-#         else:
-#             flash("No Entries found", 'danger')
-#             return render_template('dashboard.html')
+#Dashboard
+@app.route('/dashboard')
+@is_logged_in
+def dashboard():
+        #MYSQL
+        cur = mysql.connection.cursor()
+        try:
+            result = cur.execute("SELECT * FROM entries WHERE username=%s", [session.get('username')])
+            if result > 0:
+                entries = cur.fetchall()
+                return render_template('dashboard.html', entries=entries)
+            else:
+                flash("No Entries found", 'danger')
+                return render_template('dashboard.html')
+        except Exception:
+            return render_template('dashboard.html')
 
 # #Add_entry form class
 # class add_entryForm(Form):
