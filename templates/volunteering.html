@@ -2,27 +2,61 @@
 <html>
 <head>
 <style>
-body {
+#add_formatting {
   background-image: url("{{ url_for('static', filename='img1.jpg') }}");
   background-repeat: no-repeat;
-  background-attachment: fixed;  
+  background-attachment: fixed;
+  padding: 20% ;  
   background-size: cover;
+  font-weight: bolder;
 }
 </style>
 </head>
 <body>
 
 <div id ="add_formatting">
-    <p>We are an NGO - 'hackermen' committed to using our 
-        technical-managerial acumen in helping the society
-        in these tough times.</p>
+    <h1>We are an NGO - 'VIBRANCE' committed to using our 
+        techno-managerial acumen in helping the society
+        in these tough times.</h1>
 </div>
+    </div id ="action1">
+        <h1>Coronavirus Action</h1>
+        <p class = 'l1'>
+Would you be able to help in the global effort against the new Coronavirus, from the safety of your own home?
+If you have time to spare during lockdown, our Coronavirus Action project can keep you busy, give you a bigger perspective, and help 
+communities around the world be better informed.
+
+You can help give as many people as possible the opportunity to see our lesson about Covid-19 simply by:
+• Researching organisations who might be able to use or share the lesson
+• Making a list of the organisations you find
+• Passing the list on to us
+        </p>
+    </div>
+
+    <div id="doctors"></div>
+    <p>
+        <h2>If you are a doctor and would like to volunteer for Covid-19, click on the picture</h2>
+        <br>
+        <a href ="https://niti.gov.in/healthcovid/volunteer_covid.php">
+        <img src ="{{ url_for('static', filename='imagex.jpg') }}" height = 300px width=auto>
+        </a>
+    </p>
 
 <style>
     #add_formatting{
         margin : auto;
         font-size: larger;
         font-weight: bold;
+    }
+    .l1{
+        border: 3px solid black;
+        white-space: pre;
+        font-size: x-large;
+        background-color:darkgrey
+    }
+
+    #action1{
+        background-color: rgb(206, 32, 58);
     }
 </style>
 </body>

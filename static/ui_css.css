@@ -1,7 +1,7 @@
 
   body {
     font-family: Arial, Helvetica, sans-serif;
-    background-image: url(./background_ui.jpg);
+    background-image: url(background_img2.jpg);
     background-size: cover;
   }
   
@@ -63,4 +63,18 @@
   
   .Donate:hover .Donate-content, .Account:hover .Account-content {
     display: block;
+  }
+
+  span.graph_covid{
+      margin-left: 2%;
+
+  }
+
+  #you_are_not_alone{
+      margin-top: 2%;
+
+  }
+
+  #feeding_india{
+      margin-top: 2%;
   }

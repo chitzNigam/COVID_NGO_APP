@@ -1,43 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type ="text/css" href="{{ url_for('static', filename='ui_css.css') }}">
-</head>
-<body>
+{% extends 'default.html' %}
 
-<div class="navbar">
-  <!-- <a href="#Donate">Donate</a> -->
-  <!-- <a href="#Account">Account</a> -->
-  
-  <div class="Account">
-    <button class="dropbtn">Account 
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="Account-content">
-      <a href="/login">Existing User</a>
+{% block body %}
+<img src="{{ url_for('static', filename='ppe_1.jpg') }}" height = '550px' width = auto>
+<span class = 'graph_covid'>
+    <a href="https://www.mygov.in/covid-19">
+        <img src="{{ url_for('static', filename='india_covid.png') }}" height="450px" width=auto>
+    </a>
+</span>
 
-      <a href="/register">New User</a>
-      <!-- <a href="#">Other essentials</a> -->
-    </div>
-  </div> 
-
-  <a href="/about_us">About Us</a>
-  <a href="/volunteering">Volunteering</a>
-  <div class="Donate">
-    <button class="dropbtn">Donate 
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="Donate-content">
-      <a href="#">Monetary Contribution</a>
-      <a href="#">Food Donation</a>
-      <a href="#">Other essentials</a>
-    </div>
-      
-  </div> 
-  
+<div id ="you_are_not_alone">
+<a href ="https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf">
+<img src="{{ url_for('static', filename='you_are_not_alone.jpg') }}" height = '300px' width = auto>
+<p>Click for pan-India covid helpline numbers</p>
+</a>
 </div>
-{% block body %}{% endblock %}
-</body>
-</html>
+
+<!-- <div id = "feeding_india">
+<img src="feeding_india.jpg" height = '500px' width = auto>
+</div> -->
+{% endblock %}

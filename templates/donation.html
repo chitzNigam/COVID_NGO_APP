@@ -1,0 +1,40 @@
+{% extends 'default.html' %}
+
+{% block body %}
+  <h1>Welcome to Vibrance</h1>
+  <form action="" method="POST">
+    <div class="form-group">
+      <label>Donate PPE-Kits</label>
+      <input type="text" name="ppe" class="form-control" value={{request.form.ppe}}>
+    </div>
+    <div class="form-group">
+      <label>Donate Masks</label>
+      <input type="text" name="mask" class="form-control" value={{request.form.mask}}>
+    </div>
+    <div class="form-group">
+      <label>Donate Hand_Sanitizers</label>
+      <input type="text" name="sanit" class="form-control" value={{request.form.sanit}}>
+    </div>
+    <div class="form-group">
+      <label>Donate Food packets</label>
+      <input type="text" name="foodp" class="form-control" value={{request.form.foodp}}>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <style>
+    body{
+        background-color: burlywood;
+        background-image: url("{{ url_for('static', filename='donate.jpg') }}");
+        background-size: cover;
+    }
+    h1{
+        font-size: xx-large;
+        font-weight: bolder;
+        font-style: italic;
+        color: darkolivegreen;
+        text-underline-position: below;
+        align-content: center;
+    }
+    </style>
+{% endblock %}
+

@@ -20,7 +20,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # init MYSQL
 mysql = MySQL(app)
 
-
+@app.route('/home')
 @app.route('/')
 def index():
     return render_template("ui.html")
@@ -30,7 +30,27 @@ def index():
 def indeccx():
     return render_template("volunteering.html")
 
+@app.route('/cashgate')
+def cashgate():
+    return render_template("cashgate.html")
 
+class DonateForm(Form):
+    mask = StringField('Quantity of masks', [validators.NumberRange(max=99999)])
+    ppe = StringField('Quantity of PPE', [validators.NumberRange(max=99999)])
+    sanit = StringField('Quantity of Sanitisers', [validators.NumberRange(max=99999)])
+    food_units = StringField('Food Units', [validators.Length(min=1,max=10)])
+
+@app.route('/donation', methods=['GET', 'POST'])
+def donation():
+    form = DonateForm(request.form)
+    if request.method == 'POST' and form.validate():
+        mask = form.mask.data
+        ppe = form.ppe.data
+        sanit = form.sanit.data
+        food_units = form.food_units.data
+
+    
+    return render_template("donation.html")
 
 # Register Form class
 class RegisterForm(Form):
@@ -48,16 +68,6 @@ class RegisterForm(Form):
 @app.route('/about_us')
 def about_us():
     return render_template('about_us.html')
-
-# @app.route('/new_user')
-# def new_user():
-#     return render_template('new_user.html')
-
-
-# @app.route('/existing_user')
-# def existing_user():
-#     return render_template('existing_user.html')
-
 
 #User Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -113,7 +123,7 @@ def login():
                 session['name'] = name
 
                 flash('You are now logged in', 'success')
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('donate'))
             else:
                 error = 'Invalid Password'
                 return render_template('login.html', error=error)
@@ -136,110 +146,79 @@ def is_logged_in(f):
             return redirect(url_for('login'))
     return wrap
 
-# #Logout
-# @app.route('/logout')
-# @is_logged_in
-# def logout():
-#     session.clear()
-#     flash('You are now logged out', 'success')
-#     return redirect(url_for('login'))
-
-
-
+#Logout
+@app.route('/logout')
+@is_logged_in
+def logout():
+    session.clear()
+    flash('You are now logged out', 'success')
+    return redirect(url_for('login'))
 
 #Dashboard
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 @is_logged_in
 def dashboard():
-        #MYSQL
-        cur = mysql.connection.cursor()
+    form = DonateForm(request.form)
+    if request.method == 'POST' and form.validate():
+        mask = form.mask.data
+        ppe = form.ppe.data
+        food_units = form.food_units.data
+        email= session.get('email')
+        
         try:
-            result = cur.execute("SELECT * FROM entries WHERE username=%s", [session.get('username')])
-            if result > 0:
-                entries = cur.fetchall()
-                return render_template('dashboard.html', entries=entries)
-            else:
-                flash("No Entries found", 'danger')
-                return render_template('dashboard.html')
+            # Create cursor
+            cur = mysql.connection.cursor()
+
+            #Execute query
+            cur.execute("INSERT INTO donation(email,mask,ppe,food_units) VALUES(%s,%s,%s,%s,%s)",(email,mask,ppe,food_units))
+
+            #Commit to DB
+            mysql.connection.commit()
+
+            #Close connection
+            cur.close()
+
+            flash('You have registered the donation', 'success')
         except Exception:
-            return render_template('dashboard.html')
-
-# #Add_entry form class
-# class add_entryForm(Form):
-#     destination = SelectField(u'Select destination', choices=[('Allahabad Station', 'Allahabad Station'), ('PVR Vinayak', 'PVR Vinayak'), ('Civil Lines', 'Civil Lines'), ('Prayag Station', 'Prayag Station')])
-#     date = DateField('Date',  format='%Y-%m-%d')
-#     time = TimeField('Time' )
-#     trainno = IntegerField('Enter Train No if travelling by Train',[validators.optional()])
-
-
-
-
-# #add Entry
-# @app.route('/add_entry', methods=['GET', 'POST'])
-# @is_logged_in
-# def add_entry():
-#     form = add_entryForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         destination = form.destination.data
-#         date = form.date.data
-#         time = form.time.data
-#         trainno = form.trainno.data
-#         #MySQL
-#         cur = mysql.connection.cursor()
-#         cur.execute("SELECT * FROM users WHERE username=%s", [session.get('username')])
-#         user = cur.fetchone()
-#         cur.execute("INSERT INTO entries(name,fbusername,hostel,room,destination, date ,time ,trainno,username) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(user['name'],user['fbusername'],user['hostel'],user['room'],destination,date,time,trainno,user['username']))
-
-#         mysql.connection.commit()
-#         cur.close()
-
-#         flash('Your entry is added', 'success')
-
-#         return redirect(url_for('dashboard'))
-#     return render_template('add_entry.html', form=form)
-
-
-# #Search class
-# class SearchForm(Form):
-#     date = DateField(u'Enter Date',format='%Y-%m-%d')
-#     destination = SelectField(u'Select destination to search for', choices=[('Allahabad Station', 'Allahabad Station'), ('PVR Vinayak', 'PVR Vinayak'), ('Civil Lines', 'Civil Lines'), ('Prayag Station', 'Prayag Station')])
-#     trainno = IntegerField(u'Enter Train no', [validators.NumberRange(max=99999,message='Not a Valid Train No.'), validators.optional()], default=None)
-
-# @app.route('/search', methods=['GET', 'POST'])
-# @is_logged_in
-# def search():
-#     form = SearchForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         destination = form.destination.data
-#         date = form.date.data
-#         trainno = form.trainno.data
-#         #MYSQL
-#         cur = mysql.connection.cursor()
-#         if trainno == None:
-#             result = cur.execute("SELECT * FROM entries WHERE destination=%s and date=%s", [destination,date])
-#             if result > 0:
-#                 entries = cur.fetchall()
-#                 return render_template('search_results.html', entries=entries,trainno=trainno)
-#             else:
-#                 flash("No Entries found satisfying your query", 'danger')
-#                 return redirect(url_for('search'))
-#         else:
-#             result = cur.execute("SELECT * FROM entries WHERE destination=%s and date=%s and trainno=%s", [destination,date,trainno])
-#             if result > 0:
-#                 entries = cur.fetchall()
-#                 return render_template('search_results.html', entries=entries,trainno=trainno)
-#             else:
-#                 flash("No Entries found satisfying your query", 'danger')
-#                 return redirect(url_for('search'))
-#     else:
-#         return render_template('search.html', form=form)
-
-
-
-
-
+            flash("Login first","Try again")
+            return render_template('login.html')
+    return render_template('dashboard.html')
 
 if __name__=='__main__':
     app.secret_key='chit'
     app.debug = True
     app.run(host = 'localhost',port=5001)
+
+cost = {
+    "ppe" : 500,
+    "mask" : 20,
+    "foodp" : 50,
+    "sanit" : 200
+}
+
+requirement = {
+  "city1": 100000,
+  "city2": 200000,
+  "city3": 300000
+}
+
+severity = {
+    "city1" : 0.02,
+    "city2" : 0.05,
+    "city3" : 0.01
+}
+
+
+# def getestimate():
+#     try:
+#         # Create cursor
+#         cur = mysql.connection.cursor()
+
+#         result = cur.execute("Select * from inventory")
+#         if result > 0:
+#             tcost = 0
+#             pmcost = cost["ppe"]+cost["mask"]*30+cost['foodp']*60+cost["sanit"]
+#             for x in requirement:
+#                 tcost = tcost + requirement[x]*severity[x]*tcost
+
+            
