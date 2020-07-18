@@ -26,6 +26,11 @@ def index():
     return render_template("ui.html")
 
 
+@app.route('/volunteering')
+def indeccx():
+    return render_template("volunteering.html")
+
+
 
 # Register Form class
 class RegisterForm(Form):
@@ -68,7 +73,7 @@ def register():
         cur = mysql.connection.cursor()
 
         #Execute query
-        cur.execute("INSERT INTO users(name, org, email ,mobile, password) VALUES(%s,%s,%s,%s,%s,%s)",(name, org, email ,mobile, password))
+        cur.execute("INSERT INTO users(name, org, email ,mobile, password) VALUES(%s,%s,%s,%s,%s)",(name, org, email ,mobile, password))
 
         #Commit to DB
         mysql.connection.commit()
@@ -87,12 +92,12 @@ def register():
 def login():
     if request.method == 'POST':
         #Get Form fields
-        username = request.form['username']
+        email = request.form['email']
         password_candidate = request.form['password']
 
         cur = mysql.connection.cursor()
 
-        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+        result = cur.execute("SELECT * FROM users WHERE email = %s", [email])
 
         if result > 0:
             data = cur.fetchone()
@@ -102,7 +107,7 @@ def login():
             #compare Passwords
             if sha256_crypt.verify(password_candidate,password):
                 session['logged_in'] = True
-                session['username'] = username
+                session['email'] = email
                 session['name'] = name
 
                 flash('You are now logged in', 'success')
@@ -113,7 +118,7 @@ def login():
             #Close connection
             cur.close()
         else:
-            error = 'Username not found'
+            error = 'User not found'
             return render_template('login.html', error=error)
 
     return render_template('login.html')

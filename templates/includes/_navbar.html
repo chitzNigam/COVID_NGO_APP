@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark primary-color" style="z-index:7">
+
+    <!-- Navbar brand -->
+    <a class="navbar-brand" href="#">MNNIT Travel Companion</a>
+
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home
+                </a>
+            </li>
+            <!--  <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>-->
+{% if session.logged_in %} <li class="nav-item">
+                <a class="nav-link" href="/add_entry">Add new entry</a>
+            </li>{% endif %}
+
+            <!-- Dropdown -->
+
+
+        </ul>
+        <!-- Links -->
+        <ul class="nav navbar-nav navbar-right">
+          {% if session.logged_in %}
+            <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+          {% else %}
+            <li class="nav-item" ><a class="nav-link" href="/register">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+          {% endif %}
+
+        </ul>
+
+
+    </div>
+    <!-- Collapsible content -->
+
+</nav>
