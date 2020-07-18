@@ -43,83 +43,91 @@ class RegisterForm(Form):
 def about_us():
     return render_template('about_us.html')
 
-
-# #User Register
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form = RegisterForm(request.form)
-#     if request.method == 'POST' and form.validate():
-#         username = form.username.data
-#         name = form.name.data
-#         org = form.org.data
-#         email = form.email.data
-#         mobile = form.mobile.data
-#         password = sha256_crypt.encrypt(str(form.password.data))
-
-#         # Create cursor
-#         cur = mysql.connection.cursor()
-
-#         #Execute query
-#         cur.execute("INSERT INTO users(username, name, org, email ,mobile, password) VALUES(%s,%s,%s,%s,%s,%s)",( username, name, org, email ,mobile, password))
-
-#         #Commit to DB
-#         mysql.connection.commit()
-
-#         #Close connection
-#         cur.close()
-
-#         flash('You are now registered and can log in', 'success')
-
-#         return redirect(url_for('login'))
-#     return render_template('register.html', form=form)
+# @app.route('/new_user')
+# def new_user():
+#     return render_template('new_user.html')
 
 
-# #User login
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         #Get Form fields
-#         username = request.form['username']
-#         password_candidate = request.form['password']
+# @app.route('/existing_user')
+# def existing_user():
+#     return render_template('existing_user.html')
 
-#         cur = mysql.connection.cursor()
 
-#         result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+#User Register
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        org = form.org.data
+        email = form.email.data
+        mobile = form.mobile.data
+        password = sha256_crypt.encrypt(str(form.password.data))
 
-#         if result > 0:
-#             data = cur.fetchone()
-#             password = data['password']
-#             name = data['name']
+        # Create cursor
+        cur = mysql.connection.cursor()
 
-#             #compare Passwords
-#             if sha256_crypt.verify(password_candidate,password):
-#                 session['logged_in'] = True
-#                 session['username'] = username
-#                 session['name'] = name
+        #Execute query
+        cur.execute("INSERT INTO users(name, org, email ,mobile, password) VALUES(%s,%s,%s,%s,%s,%s)",(name, org, email ,mobile, password))
 
-#                 flash('You are now logged in', 'success')
-#                 return redirect(url_for('dashboard'))
-#             else:
-#                 error = 'Invalid Password'
-#                 return render_template('login.html', error=error)
-#             #Close connection
-#             cur.close()
-#         else:
-#             error = 'Username not found'
-#             return render_template('login.html', error=error)
+        #Commit to DB
+        mysql.connection.commit()
 
-#     return render_template('login.html')
+        #Close connection
+        cur.close()
 
-# #Check if user logged in
-# def is_logged_in(f):
-#     @wraps(f)
-#     def wrap(*args, **kwargs):
-#         if 'logged_in' in session:
-#             return f(*args, **kwargs)
-#         else:
-#             flash('Unauthorised, Please Login ', 'danger')
-#             return redirect(url_for('login'))
-#     return wrap
+        flash('You are now registered and can log in', 'success')
+
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
+
+
+#User login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        #Get Form fields
+        username = request.form['username']
+        password_candidate = request.form['password']
+
+        cur = mysql.connection.cursor()
+
+        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+
+        if result > 0:
+            data = cur.fetchone()
+            password = data['password']
+            name = data['name']
+
+            #compare Passwords
+            if sha256_crypt.verify(password_candidate,password):
+                session['logged_in'] = True
+                session['username'] = username
+                session['name'] = name
+
+                flash('You are now logged in', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                error = 'Invalid Password'
+                return render_template('login.html', error=error)
+            #Close connection
+            cur.close()
+        else:
+            error = 'Username not found'
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
+
+#Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorised, Please Login ', 'danger')
+            return redirect(url_for('login'))
+    return wrap
 
 # #Logout
 # @app.route('/logout')
